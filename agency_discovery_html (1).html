@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agency Discovery Framework & Scoring Tool</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif; line-height: 1.6; background-color: #f9fafb; padding: 20px; }
+        .container { max-width: 1200px; margin: 0 auto; background: white; padding: 40px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        h1 { color: #111827; font-size: 2em; margin-bottom: 8px; }
+        .subtitle { color: #6b7280; margin-bottom: 30px; }
+        .tabs { display: flex; gap: 8px; border-bottom: 2px solid #e5e7eb; margin-bottom: 30px; }
+        .tab { padding: 12px 24px; background: none; border: none; border-bottom: 3px solid transparent; cursor: pointer; font-size: 16px; font-weight: 500; color: #6b7280; transition: all 0.2s; }
+        .tab.active { color: #2563eb; border-bottom-color: #2563eb; }
+        .tab:hover { color: #1f2937; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        .alert { background: #dbeafe; border-left: 4px solid #2563eb; padding: 16px; margin-bottom: 24px; border-radius: 4px; }
+        .alert-title { font-weight: 600; color: #1e3a8a; margin-bottom: 4px; }
+        .alert-text { color: #1e40af; font-size: 14px; }
+        .section { border: 2px solid #e5e7eb; border-radius: 8px; padding: 24px; margin-bottom: 24px; }
+        .section-header { display: flex; align-items: center; margin-bottom: 16px; }
+        .section-icon { width: 24px; height: 24px; margin-right: 12px; }
+        .section-title { font-size: 1.25em; font-weight: bold; color: #111827; }
+        .subsection { margin-bottom: 20px; margin-left: 32px; }
+        .subsection-title { font-weight: 600; color: #1f2937; margin-bottom: 8px; }
+        ul { margin-left: 20px; }
+        li { margin-bottom: 4px; color: #374151; font-size: 14px; }
+        .score-badge { font-weight: 600; }
+        .highlight-box { background: #f3f4f6; padding: 12px; border-radius: 4px; font-size: 14px; }
+        .three-col { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 20px 0; }
+        .col-box { border: 1px solid #d1d5db; padding: 16px; border-radius: 4px; }
+        .col-label { font-size: 11px; font-weight: 600; color: #6b7280; text-transform: uppercase; margin-bottom: 4px; }
+        .col-value { font-size: 14px; color: #374151; }
+        .opportunity-box { background: #d1fae5; border: 2px solid #059669; padding: 20px; border-radius: 8px; margin-top: 20px; }
+        .opportunity-title { font-weight: bold; color: #065f46; margin-bottom: 12px; }
+        .opportunity-calc { color: #047857; font-size: 14px; margin-bottom: 4px; }
+        .opportunity-total { font-size: 1.5em; font-weight: bold; color: #065f46; margin-top: 12px; padding-top: 12px; border-top: 2px solid #059669; }
+        .action-box { background: #111827; color: white; padding: 24px; border-radius: 8px; margin-top: 24px; }
+        .action-title { font-weight: bold; font-size: 1.1em; margin-bottom: 16px; }
+        .action-item { margin-bottom: 8px; font-size: 14px; }
+        .tier-box { padding: 16px; border-radius: 4px; border-left: 4px solid; margin-bottom: 12px; }
+        .tier1 { background: #d1fae5; border-color: #059669; }
+        .tier2 { background: #dbeafe; border-color: #2563eb; }
+        .tier3 { background: #fef3c7; border-color: #d97706; }
+        .tier4 { background: #f3f4f6; border-color: #6b7280; }
+        .tier-title { font-weight: bold; margin-bottom: 4px; }
+        .tier-desc { font-size: 14px; margin-bottom: 8px; }
+        .tier-action { font-size: 12px; font-style: italic; }
+        .calculator { background: #1f2937; color: white; padding: 24px; border-radius: 8px; margin-top: 24px; }
+        .calc-title { font-weight: bold; font-size: 1.1em; margin-bottom: 8px; }
+        .calc-subtitle { color: #d1d5db; font-size: 14px; margin-bottom: 20px; }
+        .calc-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-bottom: 20px; }
+        .calc-field { display: flex; flex-direction: column; }
+        .calc-label { font-size: 14px; font-weight: 500; margin-bottom: 4px; }
+        select, input[type="number"] { padding: 10px; border-radius: 4px; background: #374151; border: 1px solid #4b5563; color: white; font-size: 14px; }
+        .calc-results { margin-top: 24px; padding: 20px; background: #374151; border-radius: 8px; border: 2px solid #4b5563; }
+        .results-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; text-align: center; margin-bottom: 20px; }
+        .result-label { font-size: 11px; color: #9ca3af; text-transform: uppercase; }
+        .result-score { font-size: 2em; font-weight: bold; margin-top: 4px; }
+        .result-tier { padding: 16px; border-radius: 8px; text-align: center; font-size: 1.1em; font-weight: bold; }
+        .purple-section { border-color: #ddd6fe; background: #f5f3ff; }
+        .green-section { border-color: #bbf7d0; background: #f0fdf4; }
+        .scoring-detail { background: white; padding: 16px; border-radius: 4px; border: 1px solid #e5e7eb; margin-bottom: 16px; }
+        .scoring-title { font-weight: 600; color: #111827; margin-bottom: 8px; }
+        .scoring-item { font-size: 14px; margin: 4px 0; margin-left: 16px; }
+        .example-box { margin-top: 16px; padding: 12px; background: #d1fae5; border-radius: 4px; }
+        .example-title { font-size: 11px; font-weight: 600; color: #065f46; text-transform: uppercase; margin-bottom: 4px; }
+        .example-text { font-size: 12px; color: #047857; }
+        @media print {
+            body { background: white; padding: 0; }
+            .container { box-shadow: none; }
+            .tabs { display: none; }
+            .tab-content { display: block !important; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Longtail Agency Discovery Framework</h1>
+        <p class="subtitle">Vet technical capabilities + size account opportunities</p>
+        
+        <div class="tabs">
+            <button class="tab active" onclick="showTab('template')">Discovery Template</button>
+            <button class="tab" onclick="showTab('scoring')">Scoring Rubric</button>
+        </div>
+        
+        <div id="template" class="tab-content active">
+            <div class="alert">
+                <div class="alert-title">⚠️ Two Critical Outputs Required:</div>
+                <div class="alert-text">1. Technical Readiness Score (Red/Yellow/Green) • 2. Total $ Opportunity</div>
+            </div>
+            
+            <div class="section purple-section">
+                <div class="section-header">
+                    <svg class="section-icon" fill="none" stroke="#9333ea" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                    <h2 class="section-title">PART 1: Technical Enablement (Product Adoption)</h2>
+                </div>
+                
+                <div class="subsection">
+                    <h3 class="subsection-title">API Readiness</h3>
+                    <ul>
+                        <li>Dev resources available? (in-house/retainer/none)</li>
+                        <li>Current API integrations with any platform?</li>
+                        <li>Implementation timeline capability (immediate/30d/60d+)</li>
+                        <li><span class="score-badge">SCORE: 🟢 Ready / 🟡 Needs Support / 🔴 Not Capable</span></li>
+                    </ul>
+                </div>
+                
+                <div class="subsection">
+                    <h3 class="subsection-title">Performance Optimizer (PO) Readiness</h3>
+                    <ul>
+                        <li>Volume of jobs managed simultaneously</li>
+                        <li>Current optimization approach (manual/automated/hybrid)</li>
+                        <li>Team bandwidth for automated campaign management</li>
+                        <li><span class="score-badge">SCORE: 🟢 Ready / 🟡 Needs Support / 🔴 Not Capable</span></li>
+                    </ul>
+                </div>
+                
+                <div class="subsection">
+                    <h3 class="subsection-title">IZA (Invite to Apply) Fit</h3>
+                    <ul>
+                        <li>Client types needing pre-screened candidates</li>
+                        <li>Current screening/filtering processes</li>
+                        <li>Pain points with apply quality/volume</li>
+                        <li><span class="score-badge">SCORE: 🟢 Strong Fit / 🟡 Moderate Fit / 🔴 Poor Fit</span></li>
+                    </ul>
+                </div>
+                
+                <div class="highlight-box"><strong>Quick Blocker Check:</strong> What would prevent testing these in next 90 days?</div>
+            </div>
+            
+            <div class="section green-section">
+                <div class="section-header">
+                    <svg class="section-icon" fill="none" stroke="#059669" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    <h2 class="section-title">PART 2: Opportunity Sizing (Account Penetration)</h2>
+                </div>
+                
+                <div style="background: #fef3c7; padding: 12px; border-radius: 4px; border: 1px solid #d97706; margin: 0 32px 20px;">
+                    <p style="font-weight: 600; color: #78350f; font-size: 14px;">THE THREE NUMBERS THAT MATTER:</p>
+                </div>
+                
+                <div class="three-col" style="margin: 0 32px;">
+                    <div class="col-box">
+                        <div class="col-label">CURRENT ZR SPEND</div>
+                        <div class="col-value">Monthly: $_______</div>
+                        <div class="col-value">Quarterly: $_______</div>
+                    </div>
+                    <div class="col-box" style="background: #dbeafe; border-color: #3b82f6;">
+                        <div class="col-label" style="color: #1e40af;">GROWTH POTENTIAL</div>
+                        <div class="col-value">Realistic add: $_______/mo</div>
+                        <div style="font-size: 12px; color: #6b7280; font-style: italic;">(expansion opportunities)</div>
+                    </div>
+                    <div class="col-box" style="background: #fee2e2; border-color: #ef4444;">
+                        <div class="col-label" style="color: #991b1b;">COMPETITIVE SPEND</div>
+                        <div class="col-value">Going to others: $_______/mo</div>
+                        <div style="font-size: 12px; color: #6b7280; font-style: italic;">(wallet share we don't have)</div>
+                    </div>
+                </div>
+                
+                <div class="subsection">
+                    <h3 class="subsection-title">Account Penetration Detail</h3>
+                    <ul>
+                        <li>Total agency clients: _____ (#)</li>
+                        <li>Clients currently using ZR: _____ (#)</li>
+                        <li>Clients NOT using ZR: _____ (# × est. budget = $_______)</li>
+                        <li>Top 3 competitors getting their budget: _______________</li>
+                    </ul>
+                </div>
+                
+                <div class="subsection">
+                    <h3 class="subsection-title">High-Value Account Breakdown</h3>
+                    <p style="font-size: 14px; color: #374151; margin-bottom: 8px;">Top 5 clients by opportunity:</p>
+                    <div style="margin-left: 16px; font-size: 14px; color: #374151;">
+                        <p>1. ____________: $_____ → $_____ (gap: $_____)</p>
+                        <p>2. ____________: $_____ → $_____ (gap: $_____)</p>
+                        <p>3. ____________: $_____ → $_____ (gap: $_____)</p>
+                        <p>4. ____________: $_____ → $_____ (gap: $_____)</p>
+                        <p>5. ____________: $_____ → $_____ (gap: $_____)</p>
+                    </div>
+                </div>
+                
+                <div class="opportunity-box">
+                    <div class="opportunity-title">TOTAL OPPORTUNITY CALCULATION:</div>
+                    <div class="opportunity-calc">Current Quarterly Spend: $_______</div>
+                    <div class="opportunity-calc">+ Realistic Growth (12mo): $_______</div>
+                    <div class="opportunity-calc">+ Competitive Wallet Share: $_______</div>
+                    <div class="opportunity-total">= TOTAL OPPORTUNITY: $_______</div>
+                </div>
+            </div>
+            
+            <div class="section">
+                <div class="section-header">
+                    <svg class="section-icon" fill="none" stroke="#2563eb" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
+                    <h2 class="section-title">PART 3: Context & Relationship (Quick Hits)</h2>
+                </div>
+                
+                <div style="margin-left: 32px; font-size: 14px; color: #374151;">
+                    <p style="margin-bottom: 12px;"><strong>Client Types:</strong> ________________________</p>
+                    <p style="margin-bottom: 12px;"><strong>Key Pain Points:</strong> ________________________</p>
+                    <p style="margin-bottom: 12px;"><strong>Decision Makers:</strong> ________________________</p>
+                    <p style="margin-bottom: 12px;"><strong>Current ZR Satisfaction:</strong> ________________________</p>
+                    <p style="margin-bottom: 12px;"><strong>Upcoming Catalysts:</strong> ________________________</p>
+                </div>
+            </div>
+            
+            <div class="action-box">
+                <div class="action-title">ARM Action Items</div>
+                <div class="action-item">✅ Complete technical scoring (API/PO/IZA)</div>
+                <div class="action-item">✅ Calculate total dollar opportunity</div>
+                <div class="action-item">✅ Document in SFDC with opportunity amount</div>
+                <div class="action-item">✅ Flag TIER 1 accounts for immediate action</div>
+                <div class="action-item">✅ Set 90-day follow-up based on tier</div>
+            </div>
+        </div>
+        
+        <div id="scoring" class="tab-content">
+            <div style="background: linear-gradient(to right, #2563eb, #9333ea); color: white; padding: 24px; border-radius: 8px; margin-bottom: 24px;">
+                <h2 style="font-size: 1.5em; font-weight: bold; margin-bottom: 8px;">Agency Prioritization Scoring Rubric</h2>
+                <p style="color: #dbeafe;">Score agencies 0-60 points to determine follow-up priority</p>
+            </div>
+            
+            <div class="section purple-section">
+                <h3 style="font-size: 1.25em; font-weight: bold; color: #6b21a8; margin-bottom: 20px;">Technical Readiness Score (30 points max)</h3>
+                
+                <div class="scoring-detail">
+                    <div class="scoring-title">API Capability (0-10 points)</div>
+                    <div class="scoring-item"><span style="font-weight: 600; color: #059669;">🟢 10 pts:</span> Dev resources ready, existing API usage, 30-day timeline</div>
+                    <div class="scoring-item"><span style="font-weight: 600; color: #d97706;">🟡 5 pts:</span> Has capability but needs education/support</div>
+                    <div class="scoring-item"><span style="font-weight: 600; color: #dc2626;">🔴 0 pts:</span> No dev resources, no API experience, 60+ days</div>
+                </div>
+                
+                <div class="scoring-detail">
+                    <div class="scoring-title">Performance Optimizer Readiness (0-10 points)</div>
+                    <div class="scoring-item"><span style="font-weight: 600; color: #059669;">🟢 10 pts:</span> High volume, bandwidth, comfortable with automation</div>
+                    <div class="scoring-item"><span style="font-weight: 600; color: #d97706;">🟡 5 pts:</span> Moderate volume, some automation, needs training</div>
+                    <div class="scoring-item"><span style="font-weight: 600; color: #dc2626;">🔴 0 pts:</span> Low volume, manual-only, no automation interest</div>
+                </div>
+                
+                <div class="scoring-detail">
+                    <div class="scoring-title">IZA Fit (0-10 points)</div>
+                    <div class="scoring-item"><span style="font-weight: 600; color: #059669;">🟢 10 pts:</span> Clear apply quality pain, screening needs, enterprise clients</div>
+                    <div class="scoring-item"><span style="font-weight: 600; color: #d97706;">🟡 5 pts:</span> Some quality concerns, moderate client fit</div>
+                    <div class="scoring-item"><span style="font-weight: 600; color: #dc2626;">🔴 0 pts:</span> No screening needs, volume-focused, SMB clients</div>
+                </div>
+            </div>
+            
+            <div class="section green-section">
+                <h3 style="font-size: 1.25em; font-weight: bold; color: #065f46; margin-bottom: 20px;">Opportunity Size Score (30 points max)</h3>
+                
+                <div class="scoring-detail">
+                    <div class="scoring-title" style="margin-bottom: 12px;">Based on: Growth Potential + Competitive Spend</div>
+                    <div style="font-size: 14px;">
+                        <p style="margin: 8px 0;"><strong>30 pts:</strong> $50K+ monthly opportunity</p>
+                        <p style="margin: 8px 0;"><strong>25 pts:</strong> $20K-$49K monthly opportunity</p>
+                        <p style="margin: 8px 0;"><strong>20 pts:</strong> $10K-$19K monthly opportunity</p>
+                        <p style="margin: 8px 0;"><strong>15 pts:</strong> $5K-$9K monthly opportunity</p>
+                        <p style="margin: 8px 0;"><strong>10 pts:</strong> Under $5K monthly opportunity</p>
+                    </div>
+                    
+                    <div class="example-box">
+                        <div class="example-title">Calculation Example:</div>
+                        <div class="example-text">Current: $5K/mo | Growth: $8K/mo | Competitive: $12K/mo</div>
+                        <div class="example-text">Total = $8K + $12K = $20K/mo = <strong>25 points</strong></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h3 style="font-size: 1.25em; font-weight: bold; color: #111827; margin-bottom: 20px;">Priority Tiers & Actions</h3>
+                
+                <div class="tier-box tier1">
+                    <div class="tier-title" style="color: #065f46;">TIER 1: 50-60 points</div>
+                    <div class="tier-desc" style="color: #047857;">High readiness + High opportunity = Immediate action</div>
+                    <div class="tier-action" style="color: #059669;">Action: Call within 7 days, assign AM support, fast-track onboarding</div>
+                </div>
+                
+                <div class="tier-box tier2">
+                    <div class="tier-title" style="color: #1e40af;">TIER 2: 35-49 points</div>
+                    <div class="tier-desc" style="color: #1e40af;">Strong potential needs enablement OR ready but moderate opportunity</div>
+                    <div class="tier-action" style="color: #2563eb;">Action: 30-day nurture, education resources, quarterly check-ins</div>
+                </div>
+                
+                <div class="tier-box tier3">
+                    <div class="tier-title" style="color: #92400e;">TIER 3: 20-34 points</div>
+                    <div class="tier-desc" style="color: #92400e;">Standard relationship maintenance</div>
+                    <div class="tier-action" style="color: #b45309;">Action: Standard cadence, monitor triggers, annual review</div>
+                </div>
+                
+                <div class="tier-box tier4">
+                    <div class="tier-title" style="color: #374151;">TIER 4: Under 20 points</div>
+                    <div class="tier-desc" style="color: #4b5563;">Long-term nurture, low immediate potential</div>
+                    <div class="tier-action" style="color: #6b7280;">Action: Minimal touch, automated updates, revisit if changes</div>
+                </div>
+            </div>
+            
+            <div class="calculator">
+                <div class="calc-title">Interactive Calculator</div>
+                <div class="calc-subtitle">Enter discovery findings to calculate priority score:</div>
+                
+                <div class="calc-grid">
+                    <div class="calc-field">
+                        <label class="calc-label">API Capability</label>
+                        <select id="apiCapable" onchange="calculateScore()">
+                            <option value="">Select...</option>
+                            <option value="10">🟢 Ready (10 pts)</option>
+                            <option value="5">🟡 Needs Support (5 pts)</option>
+                            <option value="0">🔴 Not Capable (0 pts)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="calc-field">
+                        <label class="calc-label">PO Readiness</label>
+                        <select id="poReady" onchange="calculateScore()">
+                            <option value="">Select...</option>
+                            <option value="10">🟢 Ready (10 pts)</option>
+                            <option value="5">🟡 Needs Support (5 pts)</option>
+                            <option value="0">🔴 Not Capable (0 pts)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="calc-field">
+                        <label class="calc-label">IZA Fit</label>
+                        <select id="izaFit" onchange="calculateScore()">
+                            <option value="">Select...</option>
+                            <option value="10">🟢 Strong Fit (10 pts)</option>
+                            <option value="5">🟡 Moderate Fit (5 pts)</option>
+                            <option value="0">🔴 Poor Fit (0 pts)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="calc-field">
+                        <label class="calc-label">Current Monthly Spend ($)</label>
+                        <input type="number" id="currentSpend" placeholder="5000" oninput="calculateScore()">
+                    </div>
+                    
+                    <div class="calc-field">
+                        <label class="calc-label">Growth Potential Monthly ($)</label>
+                        <input type="number" id="potentialSpend" placeholder="8000" oninput="calculateScore()">
+                    </div>
+                    
+                    <div class="calc-field">
+                        <label class="calc-label">Competitive Spend Monthly ($)</label>
+                        <input type="number" id="competitorSpend" placeholder="12000" oninput="calculateScore()">
+                    </div>
+                </div>
+                
+                <div id="results" class="calc-results" style="display: none;">
+                    <div class="results-grid">
+                        <div>
+                            <div class="result-label">Technical Score</div>
+                            <div class="result-score" style="color: #c084fc;" id="techScore">0/30</div>
+                        </div>
+                        <div>
+                            <div class="result-label">Opportunity Score</div>
+                            <div class="result-score" style="color: #4ade80;" id="oppScore">0/30</div>
+                        </div>
+                        <div>
+                            <div class="result-label">Total Score</div>
+                            <div class="result-score" style="color: white;" id="totalScore">0/60</div>
+                        </div>
+                    </div>
+                    
+                    <div id="tierResult" class="result-tier"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.getElementById(tabName).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        function calculateScore() {
+            const api = parseInt(document.getElementById('apiCapable').value) || 0;
+            const po = parseInt(document.getElementById('poReady').value) || 0;
+            const iza = parseInt(document.getElementById('izaFit').value) || 0;
+            const potential = parseFloat(document.getElementById('potentialSpend').value) || 0;
+            const competitor = parseFloat(document.getElementById('competitorSpend').value) || 0;
+            
+            const techScore = api + po + iza;
+            const totalOpp = potential + competitor;
+            
+            let oppScore = 10;
+            if (totalOpp >= 50000) oppScore = 30;
+            else if (totalOpp >= 20000) oppScore = 25;
+            else if (totalOpp >= 10000) oppScore = 20;
+            else if (totalOpp >= 5000) oppScore = 15;
+            
+            const totalScore = techScore + oppScore;
+            
+            document.getElementById('techScore').textContent = techScore + '/30';
+            document.getElementById('oppScore').textContent = oppScore + '/30';
+            document.getElementById('totalScore').textContent = totalScore + '/60';
+            
+            const tierResult = document.getElementById('tierResult');
+            if (totalScore >= 50) {
+                tierResult.textContent = 'TIER 1 - Immediate Action';
+                tierResult.style.background = '#059669';
+                tierResult.style.color = 'white';
+            } else if (totalScore >= 35) {
+                tierResult.textContent = 'TIER 2 - High Priority';
+                tierResult.style.background = '#2563eb';
+                tierResult.style.color = 'white';
+            } else if (totalScore >= 20) {
+                tierResult.textContent = 'TIER 3 - Standard Follow-up';
+                tierResult.style.background = '#d97706';
+                tierResult.style.color = 'white';
+            } else {
+                tierResult.textContent = 'TIER 4 - Nurture';
+                tierResult.style.background = '#6b7280';
+                tierResult.style.color = 'white';
+            }
+            
+            document.getElementById('results').style.display = 'block';
+        }
+    </script>
+</body>
+</html>
