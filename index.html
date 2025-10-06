@@ -3,57 +3,68 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agency Discovery Framework - Fillable Form</title>
+    <title>Agency Discovery Diagnostic - ZipRecruiter</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif; line-height: 1.6; background-color: #f9fafb; padding: 20px; }
-        .container { max-width: 1200px; margin: 0 auto; background: white; padding: 40px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-        h1 { color: #111827; font-size: 2em; margin-bottom: 8px; }
-        .subtitle { color: #6b7280; margin-bottom: 30px; }
-        .header-section { background: #f3f4f6; padding: 20px; border-radius: 8px; margin-bottom: 30px; }
-        .header-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
-        .header-field { display: flex; flex-direction: column; }
-        .header-field label { font-size: 12px; font-weight: 600; color: #6b7280; margin-bottom: 4px; text-transform: uppercase; }
-        .header-field input { padding: 8px; border: 1px solid #d1d5db; border-radius: 4px; font-size: 14px; }
-        .save-btn { background: #2563eb; color: white; padding: 12px 24px; border: none; border-radius: 6px; font-size: 16px; font-weight: 600; cursor: pointer; margin-bottom: 20px; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif; line-height: 1.5; background-color: #f9fafb; padding: 20px; }
+        .container { max-width: 1200px; margin: 0 auto; background: white; padding: 32px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+        .header-left h1 { color: #111827; font-size: 1.8em; margin-bottom: 4px; }
+        .header-left .subtitle { color: #6b7280; font-size: 14px; }
+        .logo { height: 50px; }
+        .save-btn { background: #2563eb; color: white; padding: 10px 20px; border: none; border-radius: 6px; font-size: 15px; font-weight: 600; cursor: pointer; margin-bottom: 16px; }
         .save-btn:hover { background: #1d4ed8; }
-        .tabs { display: flex; gap: 8px; border-bottom: 2px solid #e5e7eb; margin-bottom: 30px; }
-        .tab { padding: 12px 24px; background: none; border: none; border-bottom: 3px solid transparent; cursor: pointer; font-size: 16px; font-weight: 500; color: #6b7280; }
+        .header-section { background: #f3f4f6; padding: 16px; border-radius: 6px; margin-bottom: 24px; display: grid; grid-template-columns: 2fr 1fr 2fr; gap: 12px; }
+        .header-field input { padding: 8px; border: 1px solid #d1d5db; border-radius: 4px; font-size: 14px; width: 100%; }
+        .tabs { display: flex; gap: 8px; border-bottom: 2px solid #e5e7eb; margin-bottom: 24px; }
+        .tab { padding: 10px 20px; background: none; border: none; border-bottom: 3px solid transparent; cursor: pointer; font-size: 15px; font-weight: 500; color: #6b7280; }
         .tab.active { color: #2563eb; border-bottom-color: #2563eb; }
         .tab-content { display: none; }
         .tab-content.active { display: block; }
-        .alert { background: #dbeafe; border-left: 4px solid #2563eb; padding: 16px; margin-bottom: 24px; border-radius: 4px; }
-        .section { border: 2px solid #e5e7eb; border-radius: 8px; padding: 24px; margin-bottom: 24px; }
-        .section-header { display: flex; align-items: center; margin-bottom: 16px; }
-        .section-title { font-size: 1.25em; font-weight: bold; color: #111827; margin-left: 12px; }
-        .subsection { margin-bottom: 20px; margin-left: 32px; }
-        .subsection-title { font-weight: 600; color: #1f2937; margin-bottom: 12px; }
-        .form-field { margin-bottom: 16px; }
-        .form-field label { display: block; font-size: 14px; color: #374151; margin-bottom: 4px; }
-        .form-field input, .form-field textarea, .form-field select { width: 100%; padding: 8px; border: 1px solid #d1d5db; border-radius: 4px; font-size: 14px; font-family: inherit; }
-        .form-field textarea { min-height: 60px; resize: vertical; }
-        .score-select { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 8px; }
-        .score-option { padding: 10px; border: 2px solid #d1d5db; border-radius: 4px; text-align: center; cursor: pointer; font-size: 14px; transition: all 0.2s; }
+        .alert { background: #dbeafe; border-left: 4px solid #2563eb; padding: 12px; margin-bottom: 20px; border-radius: 4px; font-size: 14px; }
+        .section { border: 2px solid #e5e7eb; border-radius: 8px; padding: 20px; margin-bottom: 20px; }
+        .section-header { display: flex; align-items: center; margin-bottom: 14px; }
+        .section-title { font-size: 1.15em; font-weight: bold; color: #111827; margin-left: 10px; }
+        .subsection { margin-bottom: 16px; margin-left: 24px; }
+        .subsection-title { font-weight: 600; color: #1f2937; margin-bottom: 10px; font-size: 15px; }
+        .form-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-bottom: 12px; }
+        .form-field { margin-bottom: 12px; }
+        .form-field label { display: block; font-size: 13px; color: #374151; margin-bottom: 4px; font-weight: 500; }
+        .form-field input, .form-field textarea, .form-field select { padding: 7px; border: 1px solid #d1d5db; border-radius: 4px; font-size: 14px; font-family: inherit; }
+        .form-field textarea { min-height: 50px; resize: vertical; width: 100%; }
+        .form-field input[type="text"].short { width: 200px; }
+        .form-field input[type="number"].short { width: 120px; }
+        .form-field input[type="date"] { width: 160px; }
+        .form-field select { width: 180px; }
+        .toggle-group { display: flex; gap: 24px; margin-top: 8px; }
+        .toggle-item { display: flex; align-items: center; gap: 8px; }
+        .toggle-item label { margin: 0; font-weight: 400; }
+        .score-select { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 8px; max-width: 450px; }
+        .score-option { padding: 8px; border: 2px solid #d1d5db; border-radius: 4px; text-align: center; cursor: pointer; font-size: 13px; transition: all 0.2s; }
         .score-option:hover { border-color: #9ca3af; }
         .score-option.selected { border-color: #2563eb; background: #eff6ff; font-weight: 600; }
         .score-option.green.selected { border-color: #059669; background: #d1fae5; }
         .score-option.yellow.selected { border-color: #d97706; background: #fef3c7; }
         .score-option.red.selected { border-color: #dc2626; background: #fee2e2; }
-        .three-col { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 20px 0; }
-        .money-field { position: relative; }
+        .three-col { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 16px 0; }
+        .money-field { position: relative; width: 160px; }
         .money-field::before { content: '$'; position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #6b7280; font-weight: 600; }
-        .money-field input { padding-left: 24px; }
-        .opportunity-box { background: #d1fae5; border: 2px solid #059669; padding: 20px; border-radius: 8px; margin-top: 20px; }
-        .opportunity-calc { color: #047857; font-size: 14px; margin-bottom: 4px; }
-        .opportunity-total { font-size: 1.5em; font-weight: bold; color: #065f46; margin-top: 12px; padding-top: 12px; border-top: 2px solid #059669; }
+        .money-field input { padding-left: 24px; width: 100%; }
+        .opportunity-box { background: #d1fae5; border: 2px solid #059669; padding: 16px; border-radius: 8px; margin-top: 16px; }
+        .opportunity-calc { color: #047857; font-size: 13px; margin-bottom: 3px; }
+        .opportunity-total { font-size: 1.3em; font-weight: bold; color: #065f46; margin-top: 10px; padding-top: 10px; border-top: 2px solid #059669; }
         .purple-section { border-color: #ddd6fe; background: #f5f3ff; }
         .green-section { border-color: #bbf7d0; background: #f0fdf4; }
-        .client-row { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 12px; margin-bottom: 8px; align-items: end; }
-        .calculator { background: #1f2937; color: white; padding: 24px; border-radius: 8px; margin-top: 24px; }
-        .calc-results { margin-top: 24px; padding: 20px; background: #374151; border-radius: 8px; border: 2px solid #4b5563; }
-        .results-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; text-align: center; margin-bottom: 20px; }
-        .result-score { font-size: 2em; font-weight: bold; margin-top: 4px; }
-        .result-tier { padding: 16px; border-radius: 8px; text-align: center; font-size: 1.1em; font-weight: bold; }
+        .client-row { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 10px; margin-bottom: 8px; align-items: end; }
+        .contact-subsection { background: white; padding: 14px; border-radius: 6px; margin-bottom: 12px; border: 1px solid #e5e7eb; }
+        .contact-header { font-weight: 600; color: #1f2937; margin-bottom: 10px; }
+        .contact-grid { display: grid; grid-template-columns: 1fr 1fr 1fr 1.5fr; gap: 12px; align-items: end; }
+        .calculator { background: #1f2937; color: white; padding: 20px; border-radius: 8px; margin-top: 20px; }
+        .calc-results { margin-top: 20px; padding: 16px; background: #374151; border-radius: 8px; border: 2px solid #4b5563; }
+        .results-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; text-align: center; margin-bottom: 16px; }
+        .result-score { font-size: 1.8em; font-weight: bold; margin-top: 4px; }
+        .result-tier { padding: 14px; border-radius: 8px; text-align: center; font-size: 1em; font-weight: bold; }
+        .target-date { font-size: 12px; color: #6b7280; margin-top: 4px; font-style: italic; }
         @media print {
             body { background: white; padding: 0; }
             .container { box-shadow: none; }
@@ -64,26 +75,20 @@
 </head>
 <body>
     <div class="container">
-        <h1>Longtail Agency Discovery Framework</h1>
-        <p class="subtitle">Fillable Form - Complete and save as PDF</p>
+        <div class="header">
+            <div class="header-left">
+                <h1>Longtail Agency Discovery Diagnostic</h1>
+                <p class="subtitle">Fillable Form - Complete and save as PDF</p>
+            </div>
+            <img src="https://drive.google.com/uc?export=view&id=1LFpNo0VtgGmPkIIftw7sDu5mc8_FlV3y" alt="ZipRecruiter" class="logo">
+        </div>
         
         <button class="save-btn" onclick="downloadPDF()">📄 Download as PDF</button>
         
         <div class="header-section">
-            <div class="header-grid">
-                <div class="header-field">
-                    <label>Agency Name</label>
-                    <input type="text" id="agencyName" placeholder="Enter agency name">
-                </div>
-                <div class="header-field">
-                    <label>Discovery Date</label>
-                    <input type="date" id="discoveryDate">
-                </div>
-                <div class="header-field">
-                    <label>ARM Name</label>
-                    <input type="text" id="armName" placeholder="Your name">
-                </div>
-            </div>
+            <input type="text" id="agencyName" placeholder="Agency Name">
+            <input type="date" id="discoveryDate">
+            <input type="text" id="armName" placeholder="ARM Name">
         </div>
         
         <div class="tabs">
@@ -93,8 +98,7 @@
         
         <div id="template" class="tab-content active">
             <div class="alert">
-                <strong>⚠️ Two Critical Outputs Required:</strong><br>
-                1. Technical Readiness Score (Red/Yellow/Green) • 2. Total $ Opportunity
+                <strong>⚠️ Two Critical Outputs Required:</strong> 1. Technical Readiness Score (Red/Yellow/Green) • 2. Total $ Opportunity
             </div>
             
             <div class="section purple-section">
@@ -114,17 +118,37 @@
                         </select>
                     </div>
                     <div class="form-field">
-                        <label>Current API integrations with any platform?</label>
-                        <input type="text" id="apiIntegrations" placeholder="e.g., Indeed, LinkedIn">
+                        <label>Current platform integrations</label>
+                        <div class="toggle-group">
+                            <div class="toggle-item">
+                                <input type="checkbox" id="platformIndeed">
+                                <label for="platformIndeed">Indeed</label>
+                            </div>
+                            <div class="toggle-item">
+                                <input type="checkbox" id="platformLinkedIn">
+                                <label for="platformLinkedIn">LinkedIn</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-field">
+                            <label>Implementation timeline</label>
+                            <select id="apiTimeline" onchange="calculateTargetDate()">
+                                <option value="">Select...</option>
+                                <option value="30">30 days</option>
+                                <option value="60">60 days</option>
+                                <option value="90">90 days</option>
+                            </select>
+                            <div class="target-date" id="targetDate"></div>
+                        </div>
+                        <div class="form-field">
+                            <label>Next step date</label>
+                            <input type="date" id="nextStepDate">
+                        </div>
                     </div>
                     <div class="form-field">
-                        <label>Implementation timeline capability</label>
-                        <select id="apiTimeline">
-                            <option value="">Select...</option>
-                            <option value="immediate">Immediate</option>
-                            <option value="30days">30 days</option>
-                            <option value="60plus">60+ days</option>
-                        </select>
+                        <label>Next step action</label>
+                        <input type="text" id="nextStepAction" placeholder="e.g., Schedule technical call">
                     </div>
                     <div class="form-field">
                         <label>API Readiness Score</label>
@@ -143,22 +167,24 @@
                 
                 <div class="subsection">
                     <h3 class="subsection-title">Performance Optimizer (PO) Readiness</h3>
-                    <div class="form-field">
-                        <label>Volume of jobs managed simultaneously</label>
-                        <input type="number" id="poJobVolume" placeholder="e.g., 200">
+                    <div class="form-row">
+                        <div class="form-field">
+                            <label>Volume of jobs managed</label>
+                            <input type="number" id="poJobVolume" class="short" placeholder="e.g., 200">
+                        </div>
+                        <div class="form-field">
+                            <label>Current optimization approach</label>
+                            <select id="poApproach">
+                                <option value="">Select...</option>
+                                <option value="manual">Manual</option>
+                                <option value="automated">Automated</option>
+                                <option value="hybrid">Hybrid</option>
+                            </select>
+                        </div>
                     </div>
                     <div class="form-field">
-                        <label>Current optimization approach</label>
-                        <select id="poApproach">
-                            <option value="">Select...</option>
-                            <option value="manual">Manual</option>
-                            <option value="automated">Automated</option>
-                            <option value="hybrid">Hybrid</option>
-                        </select>
-                    </div>
-                    <div class="form-field">
-                        <label>Team bandwidth for automated campaign management</label>
-                        <input type="text" id="poBandwidth" placeholder="e.g., High, Medium, Low">
+                        <label>Team bandwidth for automated management</label>
+                        <input type="text" id="poBandwidth" class="short" placeholder="High, Medium, Low">
                     </div>
                     <div class="form-field">
                         <label>PO Readiness Score</label>
@@ -179,15 +205,15 @@
                     <h3 class="subsection-title">IZA (Invite to Apply) Fit</h3>
                     <div class="form-field">
                         <label>Client types needing pre-screened candidates</label>
-                        <input type="text" id="izaClientTypes" placeholder="e.g., Enterprise, Healthcare">
+                        <input type="text" placeholder="e.g., Enterprise, Healthcare">
                     </div>
                     <div class="form-field">
                         <label>Current screening/filtering processes</label>
-                        <textarea id="izaScreening" placeholder="Describe their current process..."></textarea>
+                        <textarea placeholder="Describe their current process..."></textarea>
                     </div>
                     <div class="form-field">
                         <label>Pain points with apply quality/volume</label>
-                        <textarea id="izaPainPoints" placeholder="What challenges are they facing?"></textarea>
+                        <textarea placeholder="What challenges are they facing?"></textarea>
                     </div>
                     <div class="form-field">
                         <label>IZA Fit Score</label>
@@ -200,14 +226,14 @@
                     </div>
                     <div class="form-field">
                         <label>Notes</label>
-                        <textarea id="izaNotes" placeholder="Additional context..."></textarea>
+                        <textarea placeholder="Additional context..."></textarea>
                     </div>
                 </div>
                 
                 <div class="subsection">
                     <div class="form-field">
                         <label><strong>Quick Blocker Check:</strong> What would prevent testing these in next 90 days?</label>
-                        <textarea id="blockers" placeholder="List any blockers or concerns..."></textarea>
+                        <textarea placeholder="List any blockers or concerns..."></textarea>
                     </div>
                 </div>
             </div>
@@ -217,11 +243,11 @@
                     <h2 class="section-title">PART 2: Opportunity Sizing (Account Penetration)</h2>
                 </div>
                 
-                <div style="background: #fef3c7; padding: 12px; border-radius: 4px; border: 1px solid #d97706; margin: 0 0 20px 32px;">
-                    <p style="font-weight: 600; color: #78350f; font-size: 14px;">THE THREE NUMBERS THAT MATTER:</p>
+                <div style="background: #fef3c7; padding: 10px; border-radius: 4px; border: 1px solid #d97706; margin: 0 0 16px 24px;">
+                    <p style="font-weight: 600; color: #78350f; font-size: 13px;">THE THREE NUMBERS THAT MATTER:</p>
                 </div>
                 
-                <div class="three-col" style="margin: 0 32px;">
+                <div class="three-col" style="margin: 0 24px;">
                     <div class="form-field">
                         <label style="font-size: 11px; font-weight: 600; color: #6b7280; text-transform: uppercase;">CURRENT ZR SPEND (Monthly)</label>
                         <div class="money-field">
@@ -244,73 +270,68 @@
                 
                 <div class="subsection">
                     <h3 class="subsection-title">Account Penetration Detail</h3>
-                    <div class="form-field">
-                        <label>Total agency clients (#)</label>
-                        <input type="number" id="totalClients" placeholder="32">
-                    </div>
-                    <div class="form-field">
-                        <label>Clients currently using ZR (#)</label>
-                        <input type="number" id="clientsUsingZR" placeholder="8">
-                    </div>
-                    <div class="form-field">
-                        <label>Clients NOT using ZR (#)</label>
-                        <input type="number" id="clientsNotUsingZR" placeholder="24">
+                    <div class="form-row">
+                        <div class="form-field">
+                            <label>Total agency clients (#)</label>
+                            <input type="number" class="short" placeholder="32">
+                        </div>
+                        <div class="form-field">
+                            <label>Clients using ZR (#)</label>
+                            <input type="number" class="short" placeholder="8">
+                        </div>
+                        <div class="form-field">
+                            <label>Clients NOT using ZR (#)</label>
+                            <input type="number" class="short" placeholder="24">
+                        </div>
                     </div>
                     <div class="form-field">
                         <label>Top 3 competitors getting their budget</label>
-                        <input type="text" id="topCompetitors" placeholder="Indeed, LinkedIn, Jobcase">
+                        <input type="text" placeholder="Indeed, LinkedIn, Jobcase">
                     </div>
                 </div>
                 
                 <div class="subsection">
                     <h3 class="subsection-title">High-Value Account Breakdown (Top 5 Clients)</h3>
-                    <p style="font-size: 14px; color: #374151; margin-bottom: 12px;">List top clients by opportunity:</p>
-                    
                     <div class="client-row">
                         <label style="font-size: 12px; font-weight: 600;">Client Name</label>
                         <label style="font-size: 12px; font-weight: 600;">Current $</label>
                         <label style="font-size: 12px; font-weight: 600;">Potential $</label>
                         <label style="font-size: 12px; font-weight: 600;">Gap $</label>
                     </div>
-                    
                     <div class="client-row">
-                        <input type="text" id="client1Name" placeholder="Client 1">
-                        <div class="money-field"><input type="number" id="client1Current" placeholder="5000" oninput="calcClientGap(1)"></div>
-                        <div class="money-field"><input type="number" id="client1Potential" placeholder="12000" oninput="calcClientGap(1)"></div>
-                        <div class="money-field"><input type="number" id="client1Gap" placeholder="0" readonly style="background: #f3f4f6;"></div>
+                        <input type="text" placeholder="Client 1">
+                        <div class="money-field"><input type="number" id="client1Current" oninput="calcClientGap(1)"></div>
+                        <div class="money-field"><input type="number" id="client1Potential" oninput="calcClientGap(1)"></div>
+                        <div class="money-field"><input type="number" id="client1Gap" readonly style="background: #f3f4f6;"></div>
                     </div>
-                    
                     <div class="client-row">
-                        <input type="text" id="client2Name" placeholder="Client 2">
-                        <div class="money-field"><input type="number" id="client2Current" placeholder="3000" oninput="calcClientGap(2)"></div>
-                        <div class="money-field"><input type="number" id="client2Potential" placeholder="8000" oninput="calcClientGap(2)"></div>
-                        <div class="money-field"><input type="number" id="client2Gap" placeholder="0" readonly style="background: #f3f4f6;"></div>
+                        <input type="text" placeholder="Client 2">
+                        <div class="money-field"><input type="number" id="client2Current" oninput="calcClientGap(2)"></div>
+                        <div class="money-field"><input type="number" id="client2Potential" oninput="calcClientGap(2)"></div>
+                        <div class="money-field"><input type="number" id="client2Gap" readonly style="background: #f3f4f6;"></div>
                     </div>
-                    
                     <div class="client-row">
-                        <input type="text" id="client3Name" placeholder="Client 3">
+                        <input type="text" placeholder="Client 3">
                         <div class="money-field"><input type="number" id="client3Current" oninput="calcClientGap(3)"></div>
                         <div class="money-field"><input type="number" id="client3Potential" oninput="calcClientGap(3)"></div>
-                        <div class="money-field"><input type="number" id="client3Gap" placeholder="0" readonly style="background: #f3f4f6;"></div>
+                        <div class="money-field"><input type="number" id="client3Gap" readonly style="background: #f3f4f6;"></div>
                     </div>
-                    
                     <div class="client-row">
-                        <input type="text" id="client4Name" placeholder="Client 4">
+                        <input type="text" placeholder="Client 4">
                         <div class="money-field"><input type="number" id="client4Current" oninput="calcClientGap(4)"></div>
                         <div class="money-field"><input type="number" id="client4Potential" oninput="calcClientGap(4)"></div>
-                        <div class="money-field"><input type="number" id="client4Gap" placeholder="0" readonly style="background: #f3f4f6;"></div>
+                        <div class="money-field"><input type="number" id="client4Gap" readonly style="background: #f3f4f6;"></div>
                     </div>
-                    
                     <div class="client-row">
-                        <input type="text" id="client5Name" placeholder="Client 5">
+                        <input type="text" placeholder="Client 5">
                         <div class="money-field"><input type="number" id="client5Current" oninput="calcClientGap(5)"></div>
                         <div class="money-field"><input type="number" id="client5Potential" oninput="calcClientGap(5)"></div>
-                        <div class="money-field"><input type="number" id="client5Gap" placeholder="0" readonly style="background: #f3f4f6;"></div>
+                        <div class="money-field"><input type="number" id="client5Gap" readonly style="background: #f3f4f6;"></div>
                     </div>
                 </div>
                 
-                <div class="opportunity-box" style="margin: 0 32px;">
-                    <div style="font-weight: bold; color: #065f46; margin-bottom: 12px;">TOTAL OPPORTUNITY CALCULATION:</div>
+                <div class="opportunity-box" style="margin: 0 24px;">
+                    <div style="font-weight: bold; color: #065f46; margin-bottom: 10px;">TOTAL OPPORTUNITY CALCULATION:</div>
                     <div class="opportunity-calc">Current Quarterly Spend: $<span id="quarterlySpend">0</span></div>
                     <div class="opportunity-calc">+ Realistic Growth (12mo): $<span id="annualGrowth">0</span></div>
                     <div class="opportunity-calc">+ Competitive Wallet Share: $<span id="competitiveTotal">0</span></div>
@@ -320,25 +341,162 @@
             
             <div class="section">
                 <div class="section-header">
-                    <h2 class="section-title">PART 3: Context & Relationship (Quick Hits)</h2>
+                    <h2 class="section-title">PART 3: Relationships & Context</h2>
                 </div>
                 
-                <div style="margin-left: 32px;">
+                <div style="margin-left: 24px;">
+                    <div class="contact-subsection">
+                        <div class="contact-header">Technical Contact</div>
+                        <div class="contact-grid">
+                            <div class="form-field">
+                                <label>Has relationship?</label>
+                                <select>
+                                    <option value="">Select...</option>
+                                    <option value="yes">Yes</option>
+                                    <option value="no">No</option>
+                                </select>
+                            </div>
+                            <div class="form-field">
+                                <label>Sentiment toward Zip</label>
+                                <select>
+                                    <option value="">Select...</option>
+                                    <option value="positive">Positive</option>
+                                    <option value="negative">Negative</option>
+                                    <option value="indifferent">Indifferent</option>
+                                </select>
+                            </div>
+                            <div class="form-field">
+                                <label>Relationship owner</label>
+                                <select id="techOwner" onchange="toggleOwnerField('techOwner', 'techOwnerOther')">
+                                    <option value="">Select...</option>
+                                    <option value="me">Me</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                            <div class="form-field">
+                                <label>If other, who?</label>
+                                <input type="text" id="techOwnerOther" class="short" placeholder="Name">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-subsection">
+                        <div class="contact-header">Account Manager</div>
+                        <div class="contact-grid">
+                            <div class="form-field">
+                                <label>Has relationship?</label>
+                                <select>
+                                    <option value="">Select...</option>
+                                    <option value="yes">Yes</option>
+                                    <option value="no">No</option>
+                                </select>
+                            </div>
+                            <div class="form-field">
+                                <label>Sentiment toward Zip</label>
+                                <select>
+                                    <option value="">Select...</option>
+                                    <option value="positive">Positive</option>
+                                    <option value="negative">Negative</option>
+                                    <option value="indifferent">Indifferent</option>
+                                </select>
+                            </div>
+                            <div class="form-field">
+                                <label>Relationship owner</label>
+                                <select id="amOwner" onchange="toggleOwnerField('amOwner', 'amOwnerOther')">
+                                    <option value="">Select...</option>
+                                    <option value="me">Me</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                            <div class="form-field">
+                                <label>If other, who?</label>
+                                <input type="text" id="amOwnerOther" class="short" placeholder="Name">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-subsection">
+                        <div class="contact-header">Business Development</div>
+                        <div class="contact-grid">
+                            <div class="form-field">
+                                <label>Has relationship?</label>
+                                <select>
+                                    <option value="">Select...</option>
+                                    <option value="yes">Yes</option>
+                                    <option value="no">No</option>
+                                </select>
+                            </div>
+                            <div class="form-field">
+                                <label>Sentiment toward Zip</label>
+                                <select>
+                                    <option value="">Select...</option>
+                                    <option value="positive">Positive</option>
+                                    <option value="negative">Negative</option>
+                                    <option value="indifferent">Indifferent</option>
+                                </select>
+                            </div>
+                            <div class="form-field">
+                                <label>Relationship owner</label>
+                                <select id="bdOwner" onchange="toggleOwnerField('bdOwner', 'bdOwnerOther')">
+                                    <option value="">Select...</option>
+                                    <option value="me">Me</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                            <div class="form-field">
+                                <label>If other, who?</label>
+                                <input type="text" id="bdOwnerOther" class="short" placeholder="Name">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-subsection">
+                        <div class="contact-header">Leadership</div>
+                        <div class="contact-grid">
+                            <div class="form-field">
+                                <label>Has relationship?</label>
+                                <select>
+                                    <option value="">Select...</option>
+                                    <option value="yes">Yes</option>
+                                    <option value="no">No</option>
+                                </select>
+                            </div>
+                            <div class="form-field">
+                                <label>Sentiment toward Zip</label>
+                                <select>
+                                    <option value="">Select...</option>
+                                    <option value="positive">Positive</option>
+                                    <option value="negative">Negative</option>
+                                    <option value="indifferent">Indifferent</option>
+                                </select>
+                            </div>
+                            <div class="form-field">
+                                <label>Relationship owner</label>
+                                <select id="leadershipOwner" onchange="toggleOwnerField('leadershipOwner', 'leadershipOwnerOther')">
+                                    <option value="">Select...</option>
+                                    <option value="me">Me</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                            <div class="form-field">
+                                <label>If other, who?</label>
+                                <input type="text" id="leadershipOwnerOther" class="short" placeholder="Name">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <h3 class="subsection-title" style="margin-top: 20px;">Additional Context</h3>
                     <div class="form-field">
                         <label>Primary Client Types</label>
-                        <input type="text" id="clientTypes" placeholder="Enterprise, SMB, Healthcare, etc.">
+                        <input type="text" placeholder="Enterprise, SMB, Healthcare, etc.">
                     </div>
                     <div class="form-field">
                         <label>Key Pain Points</label>
-                        <textarea id="painPoints" placeholder="What are their biggest challenges?"></textarea>
-                    </div>
-                    <div class="form-field">
-                        <label>Decision Makers</label>
-                        <input type="text" id="decisionMakers" placeholder="Names and titles">
+                        <textarea placeholder="What are their biggest challenges?"></textarea>
                     </div>
                     <div class="form-field">
                         <label>Current ZR Satisfaction</label>
-                        <select id="satisfaction">
+                        <select>
                             <option value="">Select...</option>
                             <option value="very-satisfied">Very Satisfied</option>
                             <option value="satisfied">Satisfied</option>
@@ -348,29 +506,29 @@
                     </div>
                     <div class="form-field">
                         <label>Upcoming Catalysts (renewals, RFPs, budget cycles)</label>
-                        <textarea id="catalysts" placeholder="Any upcoming events or triggers?"></textarea>
+                        <textarea placeholder="Any upcoming events or triggers?"></textarea>
                     </div>
                 </div>
             </div>
             
-            <div style="background: #111827; color: white; padding: 24px; border-radius: 8px;">
-                <h3 style="font-weight: bold; font-size: 1.1em; margin-bottom: 16px;">Next Steps & Action Items</h3>
+            <div style="background: #111827; color: white; padding: 20px; border-radius: 8px;">
+                <h3 style="font-weight: bold; font-size: 1em; margin-bottom: 12px;">Next Steps & Action Items</h3>
                 <div class="form-field">
                     <label style="color: white;">Document your next actions:</label>
-                    <textarea id="actionItems" placeholder="List next steps and follow-up actions..." style="min-height: 100px;"></textarea>
+                    <textarea placeholder="List next steps and follow-up actions..." style="min-height: 80px;"></textarea>
                 </div>
             </div>
         </div>
         
         <div id="scoring" class="tab-content">
-            <div style="background: linear-gradient(to right, #2563eb, #9333ea); color: white; padding: 24px; border-radius: 8px; margin-bottom: 24px;">
-                <h2 style="font-size: 1.5em; font-weight: bold; margin-bottom: 8px;">Interactive Scoring Calculator</h2>
-                <p style="color: #dbeafe;">Auto-calculates based on your discovery template inputs</p>
+            <div style="background: linear-gradient(to right, #2563eb, #9333ea); color: white; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+                <h2 style="font-size: 1.4em; font-weight: bold; margin-bottom: 6px;">Interactive Scoring Calculator</h2>
+                <p style="color: #dbeafe; font-size: 14px;">Auto-calculates based on your discovery template inputs</p>
             </div>
             
             <div class="calculator">
-                <div style="font-weight: bold; font-size: 1.1em; margin-bottom: 8px;">Your Scores</div>
-                <div style="color: #d1d5db; font-size: 14px; margin-bottom: 20px;">Scores update automatically as you fill out the discovery template</div>
+                <div style="font-weight: bold; font-size: 1em; margin-bottom: 6px;">Your Scores</div>
+                <div style="color: #d1d5db; font-size: 13px; margin-bottom: 16px;">Scores update automatically as you fill out the discovery template</div>
                 
                 <div id="calcResults" class="calc-results">
                     <div class="results-grid">
@@ -390,19 +548,19 @@
                     
                     <div id="calcTierResult" class="result-tier" style="background: #6b7280;">TIER 4 - Nurture</div>
                     
-                    <div style="margin-top: 20px; padding: 16px; background: #1f2937; border-radius: 4px; border: 1px solid #4b5563;">
-                        <div style="font-size: 14px; font-weight: 600; margin-bottom: 8px;">Score Breakdown:</div>
-                        <div style="font-size: 13px; color: #d1d5db;">
-                            <p style="margin: 4px 0;">• API: <span id="apiScoreDisplay">Not scored</span></p>
-                            <p style="margin: 4px 0;">• PO: <span id="poScoreDisplay">Not scored</span></p>
-                            <p style="margin: 4px 0;">• IZA: <span id="izaScoreDisplay">Not scored</span></p>
-                            <p style="margin: 12px 0 4px; font-weight: 600;">Opportunity: $<span id="oppAmountDisplay">0</span>/month</p>
+                    <div style="margin-top: 16px; padding: 14px; background: #1f2937; border-radius: 4px; border: 1px solid #4b5563;">
+                        <div style="font-size: 13px; font-weight: 600; margin-bottom: 6px;">Score Breakdown:</div>
+                        <div style="font-size: 12px; color: #d1d5db;">
+                            <p style="margin: 3px 0;">• API: <span id="apiScoreDisplay">Not scored</span></p>
+                            <p style="margin: 3px 0;">• PO: <span id="poScoreDisplay">Not scored</span></p>
+                            <p style="margin: 3px 0;">• IZA: <span id="izaScoreDisplay">Not scored</span></p>
+                            <p style="margin: 10px 0 3px; font-weight: 600;">Opportunity: $<span id="oppAmountDisplay">0</span>/month</p>
                         </div>
                     </div>
                     
-                    <div style="margin-top: 20px; padding: 16px; background: #1f2937; border-radius: 4px; border: 1px solid #4b5563;">
-                        <div style="font-size: 14px; font-weight: 600; margin-bottom: 8px;">Recommended Actions:</div>
-                        <div id="recommendedActions" style="font-size: 13px; color: #d1d5db;">
+                    <div style="margin-top: 16px; padding: 14px; background: #1f2937; border-radius: 4px; border: 1px solid #4b5563;">
+                        <div style="font-size: 13px; font-weight: 600; margin-bottom: 6px;">Recommended Actions:</div>
+                        <div id="recommendedActions" style="font-size: 12px; color: #d1d5db;">
                             <p>Complete the discovery template to see recommended actions.</p>
                         </div>
                     </div>
@@ -423,21 +581,14 @@
             const container = element.parentElement;
             container.querySelectorAll('.score-option').forEach(opt => opt.classList.remove('selected'));
             element.classList.add('selected');
-            
-            let value = '';
-            if (color === 'green') value = 'green';
-            if (color === 'yellow') value = 'yellow';
-            if (color === 'red') value = 'red';
-            
-            document.getElementById(fieldId).value = value;
+            document.getElementById(fieldId).value = color;
             calculateScores();
         }
 
         function calcClientGap(num) {
             const current = parseFloat(document.getElementById(`client${num}Current`).value) || 0;
             const potential = parseFloat(document.getElementById(`client${num}Potential`).value) || 0;
-            const gap = potential - current;
-            document.getElementById(`client${num}Gap`).value = gap > 0 ? gap : 0;
+            document.getElementById(`client${num}Gap`).value = Math.max(0, potential - current);
         }
 
         function calculateOpportunity() {
@@ -453,6 +604,24 @@
             calculateScores();
         }
 
+        function calculateTargetDate() {
+            const days = parseInt(document.getElementById('apiTimeline').value);
+            if (days) {
+                const target = new Date();
+                target.setDate(target.getDate() + days);
+                document.getElementById('targetDate').textContent = 'Target: ' + target.toLocaleDateString();
+            } else {
+                document.getElementById('targetDate').textContent = '';
+            }
+        }
+
+        function toggleOwnerField(selectId, otherId) {
+            const select = document.getElementById(selectId);
+            const other = document.getElementById(otherId);
+            other.disabled = select.value !== 'other';
+            if (select.value !== 'other') other.value = '';
+        }
+
         function calculateScores() {
             const apiScore = document.getElementById('apiScore').value;
             const poScore = document.getElementById('poScore').value;
@@ -461,10 +630,8 @@
             let techPoints = 0;
             if (apiScore === 'green') techPoints += 10;
             else if (apiScore === 'yellow') techPoints += 5;
-            
             if (poScore === 'green') techPoints += 10;
             else if (poScore === 'yellow') techPoints += 5;
-            
             if (izaScore === 'green') techPoints += 10;
             else if (izaScore === 'yellow') techPoints += 5;
             
@@ -495,27 +662,23 @@
             if (totalPoints >= 50) {
                 tierResult.textContent = 'TIER 1 - Immediate Action';
                 tierResult.style.background = '#059669';
-                actionsDiv.innerHTML = '<p><strong>HIGH PRIORITY:</strong></p><p>• Schedule implementation call within 7 days</p><p>• Assign AM support</p><p>• Fast-track onboarding</p><p>• Loop in manager for strategic support</p>';
+                actionsDiv.innerHTML = '<p><strong>HIGH PRIORITY:</strong></p><p>• Schedule implementation call within 7 days</p><p>• Assign AM support</p><p>• Fast-track onboarding</p>';
             } else if (totalPoints >= 35) {
                 tierResult.textContent = 'TIER 2 - High Priority';
                 tierResult.style.background = '#2563eb';
-                actionsDiv.innerHTML = '<p><strong>NURTURE & ENABLE:</strong></p><p>• Create 30-day nurture plan</p><p>• Send education materials</p><p>• Schedule quarterly check-ins</p><p>• Focus on removing barriers</p>';
+                actionsDiv.innerHTML = '<p><strong>NURTURE & ENABLE:</strong></p><p>• Create 30-day nurture plan</p><p>• Send education materials</p><p>• Schedule quarterly check-ins</p>';
             } else if (totalPoints >= 20) {
                 tierResult.textContent = 'TIER 3 - Standard Follow-up';
                 tierResult.style.background = '#d97706';
-                actionsDiv.innerHTML = '<p><strong>STANDARD CADENCE:</strong></p><p>• Maintain regular ARM touchpoints</p><p>• Monitor for trigger events</p><p>• Annual deep-dive review</p><p>• Keep updated on product launches</p>';
+                actionsDiv.innerHTML = '<p><strong>STANDARD CADENCE:</strong></p><p>• Maintain regular ARM touchpoints</p><p>• Monitor for trigger events</p><p>• Annual deep-dive review</p>';
             } else {
                 tierResult.textContent = 'TIER 4 - Nurture';
                 tierResult.style.background = '#6b7280';
-                actionsDiv.innerHTML = '<p><strong>MINIMAL TOUCH:</strong></p><p>• Automated updates only</p><p>• Revisit in 6-12 months</p><p>• Monitor for changes in capability/budget</p>';
+                actionsDiv.innerHTML = '<p><strong>MINIMAL TOUCH:</strong></p><p>• Automated updates only</p><p>• Revisit in 6-12 months</p>';
             }
         }
 
         function downloadPDF() {
-            const agencyName = document.getElementById('agencyName').value || 'Agency';
-            const date = document.getElementById('discoveryDate').value || new Date().toISOString().split('T')[0];
-            const filename = agencyName.replace(/[^a-z0-9]/gi, '_') + '_Discovery_' + date + '.pdf';
-            
             window.print();
         }
 
